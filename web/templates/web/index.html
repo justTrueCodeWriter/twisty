@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index Page</title>
+</head>
+<body>
+<style>
+    .post {
+        width: 500px;
+        margin: auto;
+        background-color: lightgray;
+    }
+    .header {
+        padding: 8px 0 8px 0;
+        background-color: gray;
+        margin: 0 0 10px 0;
+    }
+    .nav-bar {
+        width: 600px;
+        margin: auto;
+    }
+
+    body {
+        margin: 0;
+    }
+</style>
+    <div class="header">
+        <div class="nav-bar">
+            <b align="center">Twisty</b>
+            <a href="{% url 'login' %}">login</a>
+            <a href="{% url 'create_post' %}">new post</a>
+        </div>
+    </div>
+    <div class="container">
+        {% for post in posts %}
+        <div align="center" class="post">
+            <b>Author: {{ post.author.name }}</b><br>
+            <hr>
+            <p>{{ post.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

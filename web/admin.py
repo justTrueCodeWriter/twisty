@@ -1,3 +1,15 @@
 from django.contrib import admin
+from web.views import Profile, Post
 
-# Register your models here.
+
+class ProfileAdmin(admin.ModelAdmin):
+    ...
+
+
+class PostAdmin(admin.ModelAdmin):
+    ...
+
+
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Post, PostAdmin)
+
