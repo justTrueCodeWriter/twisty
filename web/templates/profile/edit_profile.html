@@ -5,21 +5,20 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create post</title>
+    <title>Edit profile</title>
 </head>
 <body>
-    <form method="post" action="{% url 'create_post' %}">
+    <form method="post" action="{% url 'edit_profile' %}">
         {% csrf_token %}
 
-        <h1>Привет, {{ user.username }}. Что нового?</h1>
         <table>
         <tr>
-            <td><label for="post-text">Текст:</label><br></td>
-            <td><input type="text" id="post-text" name="text"></td>
+            <td><label for="username">Name:</label><br></td>
+            <td><input type="text" id="username" name="username"></td>
         </tr>
         </table>
 
-        <input type="submit" value="Create">
+        <input type="submit" value="Apply">
     </form>
 </body>
 </html>

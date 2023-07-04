@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{{ username }}</title>
+</head>
+<body>
+<style>
+    .profile {
+        width: 500px;
+        margin: auto;
+        background-color: lightgray;
+    }
+    .header {
+        padding: 8px 0 8px 0;
+        background-color: gray;
+        margin: 0 0 10px 0;
+    }
+    .nav-bar {
+        width: 600px;
+        margin: auto;
+    }
+
+    body {
+        margin: 0;
+    }
+</style>
+    <div class="header">
+        <div class="nav-bar">
+			<a align="center" href="{% url 'index' %}">Twisty</a>
+        </div>
+    </div>
+    <div class="container">
+        <div align="center" class="profile">
+            <h1>{{ username }}</h1><br>
+            <hr>
+			{% for post in posts %}
+				<b>{{ post.text }}</b><br>
+				<hr>
+			{% endfor %}
+        </div>
+    </div>
+</body>
+</html>

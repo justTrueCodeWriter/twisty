@@ -23,3 +23,20 @@ class IndexPage(View):
         posts = Post.objects.all()
         context = {"posts": posts}
         return render(request, "web/index.html", context)
+
+class ProfilePage(View):
+    def get(self, request, *args, **kwargs):
+        username = Profile.objects.get(owner=request.user)
+        posts = Post.objects.all().filter(author = username)
+        context = {"username": username,
+                   "posts": posts}
+        return render(request, "profile/profile_view.html", context)
+
+class EditProfile(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "profile/edit_profile.html")
+    
+    def post(self, request, *args, **kwargs):
+        user = Profile(owner=request.POST["username"])
+        user.save()
+        return HttpResponseRedirect(reverse("profile"))
