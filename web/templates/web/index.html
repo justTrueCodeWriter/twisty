@@ -8,17 +8,41 @@
     <title>Index Page</title>
 </head>
 <body>
-    {% if message %}
-    <p>{{ message }}</p>
-    {% endif %}
+<style>
+    .post {
+        width: 500px;
+        margin: auto;
+        background-color: lightgray;
+    }
+    .header {
+        padding: 8px 0 8px 0;
+        background-color: gray;
+        margin: 0 0 10px 0;
+    }
+    .nav-bar {
+        width: 600px;
+        margin: auto;
+    }
 
+    body {
+        margin: 0;
+    }
+</style>
     <div class="header">
-        <h1 align="center">Twisty</h1>
+        <div class="nav-bar">
+            <b align="center">Twisty</b>
+            <a href="{% url 'login' %}">login</a>
+            <a href="{% url 'create_post' %}">new post</a>
+        </div>
     </div>
     <div class="container">
-        <div align="center">
-            <p>Hello World</p>
+        {% for post in posts %}
+        <div align="center" class="post">
+            <b>Author: {{ post.author.name }}</b><br>
+            <hr>
+            <p>{{ post.text }}</p>
         </div>
+        {% endfor %}
     </div>
 </body>
 </html>

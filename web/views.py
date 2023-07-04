@@ -20,4 +20,6 @@ class CreatePost(View):
 
 class IndexPage(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "web/index.html")
+        posts = Post.objects.all()
+        context = {"posts": posts}
+        return render(request, "web/index.html", context)
