@@ -8,9 +8,24 @@
     <title>Registration</title>
 </head>
 <body>
-    <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-</form>
+    <form method="post" action="{% url 'registration' %}">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td><label>Your login:</label></td>
+        <td><input type="text" name="username"></td>
+    </tr>
+    <tr>
+        <td><label>Your nickname:</label></td>
+        <td><input type="text" name="nickname"></td>
+    </tr>
+    <tr>
+        <td><label>Your password:</label></td>
+        <td><input type="text" name="password"></td>
+    </tr>
+    </table>
+
+    <input type="submit" value="Registration">
+    </form>
 </body>
 </html>

@@ -1,6 +1,8 @@
 from django.shortcuts import render, reverse
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.models import User
 
 from web.models import Post, Profile
 
@@ -18,11 +20,50 @@ class CreatePost(View):
         return HttpResponseRedirect(reverse("index"))
 
 
+class Registration(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "registration/reg.html")
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+        new_user = User.objects.create_user(request.POST["username"])
+        new_user.set_password(request.POST["password"])
+        new_user.save()
+        new_profile = Profile(owner=new_user, name=request.POST["nickname"])
+        new_profile.save()
+        return HttpResponseRedirect(reverse("login"))
+
+
+class Logout(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse("index"))
+
+
+class Login(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "registration/login.html")
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("index"))
+        user = authenticate(username=request.POST["username"],
+                            password=request.POST["password"])
+        if user:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return HttpResponseRedirect(request.POST["next"])
+
+
 class IndexPage(View):
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
         context = {"posts": posts}
         return render(request, "web/index.html", context)
+
 
 class ProfilePage(View):
     def get(self, request, *args, **kwargs):
@@ -31,6 +72,7 @@ class ProfilePage(View):
         context = {"username": username,
                    "posts": posts}
         return render(request, "profile/profile_view.html", context)
+
 
 class EditProfile(View):
     def get(self, request, *args, **kwargs):
