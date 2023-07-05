@@ -35,6 +35,13 @@ class Registration(View):
         return HttpResponseRedirect(reverse("login"))
 
 
+class Logout(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse("index"))
+
+
 class IndexPage(View):
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
