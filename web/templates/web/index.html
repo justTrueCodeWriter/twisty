@@ -43,7 +43,12 @@
     <div class="container">
         {% for post in posts %}
         <div align="center" class="post">
-            <b>Author: {{ post.author.name }}</b><br>
+            <b>Author: {{ post.author.name }}</b>
+			<form method="post" action="{% url 'delete_post' %}">
+			{% csrf_token %}
+			<input hidden type="text" name="index" value="{{ forloop.counter0 }}">
+			<input type="submit" value="del">		
+			</form><br>
             <hr>
             <p>{{ post.text }}</p>
         </div>

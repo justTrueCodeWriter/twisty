@@ -8,6 +8,7 @@
     <title>Registration</title>
 </head>
 <body>
+	<div align="center">
     <form method="post" action="{% url 'registration' %}">
     {% csrf_token %}
     <table>
@@ -21,11 +22,12 @@
     </tr>
     <tr>
         <td><label>Your password:</label></td>
-        <td><input type="text" name="password"></td>
+        <td><input type="password" name="password"></td>
     </tr>
     </table>
 
     <input type="submit" value="Registration">
     </form>
+	</div>
 </body>
 </html>

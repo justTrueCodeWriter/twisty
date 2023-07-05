@@ -8,6 +8,7 @@
     <title>Create post</title>
 </head>
 <body>
+	<div align="center">
     <form method="post" action="{% url 'create_post' %}">
         {% csrf_token %}
 
@@ -21,5 +22,6 @@
 
         <input type="submit" value="Create">
     </form>
+	</div>
 </body>
 </html>

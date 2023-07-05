@@ -19,6 +19,12 @@ class CreatePost(View):
                 new_post.save()
         return HttpResponseRedirect(reverse("index"))
 
+class DeletePost(View):
+    def post(self, request, *args, **kwargs):
+        index = int(request.POST["index"])
+        post = Post.objects.all()[index]
+        post.delete()
+        return HttpResponseRedirect(reverse("index")) 
 
 class Registration(View):
     def get(self, request, *args, **kwargs):
