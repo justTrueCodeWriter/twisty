@@ -31,8 +31,12 @@
     <div class="header">
         <div class="nav-bar">
             <b align="center">Twisty</b>
-            <a href="{% url 'login' %}">login</a>
             <a href="{% url 'create_post' %}">new post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">my profile</a>
+            {% else %}
+            <a href="{% url 'login' %}">login</a>
+            {% endif %}
         </div>
     </div>
     <div class="container">
