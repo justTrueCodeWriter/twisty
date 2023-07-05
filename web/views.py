@@ -37,6 +37,7 @@ class EditProfile(View):
         return render(request, "profile/edit_profile.html")
     
     def post(self, request, *args, **kwargs):
-        user = Profile(owner=request.POST["username"])
-        user.save()
+        username = Profile.objects.get(owner=request.user)
+        username.name = request.POST["username"]
+        username.save(update_fields=["name"])
         return HttpResponseRedirect(reverse("profile"))
