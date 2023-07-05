@@ -21,10 +21,23 @@ class CreatePost(View):
 
 class DeletePost(View):
     def post(self, request, *args, **kwargs):
-        index = int(request.POST["index"])
+        index = int(request.POST["index_del"])
         post = Post.objects.all()[index]
         post.delete()
         return HttpResponseRedirect(reverse("index")) 
+
+class EditPost(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "web/edit_post.html")
+
+    '''def post(self, request, *args, **kwargs):
+        index = int(request.POST["index_del"])
+        user_profile = Profile.objects.get(owner=request.user)
+        post = Post.objects.get(author=user_profile)[index]
+        post.text = request.POST["text"]
+        post.save()
+        return HttpResponseRedirect(reverse("index"))
+    '''
 
 class Registration(View):
     def get(self, request, *args, **kwargs):
