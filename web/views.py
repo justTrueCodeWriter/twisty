@@ -1,6 +1,8 @@
 from django.shortcuts import render, reverse
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 from web.models import Post, Profile
 
@@ -16,6 +18,21 @@ class CreatePost(View):
                 new_post = Post(text=request.POST["text"], author=user_profile)
                 new_post.save()
         return HttpResponseRedirect(reverse("index"))
+
+
+class Registration(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "registration/reg.html")
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+        new_user = User.objects.create_user(request.POST["username"])
+        new_user.set_password(request.POST["password"])
+        new_user.save()
+        new_profile = Profile(owner=new_user, name=request.POST["nickname"])
+        new_profile.save()
+        return HttpResponseRedirect(reverse("login"))
 
 
 class IndexPage(View):
