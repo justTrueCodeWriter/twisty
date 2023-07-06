@@ -43,7 +43,7 @@
     <div class="container">
         {% for post in posts %}
         <div align="center" class="post">
-            <b>Author: {{ post.author.name }}</b>
+            <b>Author: <a href="{% url 'profile_id' id=post.author.pk %}">{{ post.author.name }}</a></b>
 
             {# TODO: Это потом лучше сделать через API и JS #}
 			<form method="post" action="{% url 'delete_post' %}">
