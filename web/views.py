@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+from django.contrib import messages
 from django.shortcuts import render, reverse
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect
@@ -19,12 +21,14 @@ class CreatePost(View):
                 new_post.save()
         return HttpResponseRedirect(reverse("index"))
 
+
 class DeletePost(View):
     def post(self, request, *args, **kwargs):
         index = int(request.POST["index_del"])
         post = Post.objects.all()[index]
         post.delete()
         return HttpResponseRedirect(reverse("index")) 
+
 
 class EditPost(View):
     def get(self, request, *args, **kwargs):
@@ -39,6 +43,7 @@ class EditPost(View):
         return HttpResponseRedirect(reverse("index"))
     '''
 
+
 class Registration(View):
     def get(self, request, *args, **kwargs):
         return render(request, "registration/reg.html")
@@ -46,7 +51,13 @@ class Registration(View):
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             logout(request)
-        new_user = User.objects.create_user(request.POST["username"])
+
+        try:
+            new_user = User.objects.create_user(request.POST["username"])
+        except IntegrityError:  #SQLite
+            messages.error(request, "You are already registered")
+            return HttpResponseRedirect(reverse("registration"))
+
         new_user.set_password(request.POST["password"])
         new_user.save()
         new_profile = Profile(owner=new_user, name=request.POST["nickname"])
@@ -86,9 +97,19 @@ class IndexPage(View):
 
 class ProfilePage(View):
     def get(self, request, *args, **kwargs):
-        username = Profile.objects.get(owner=request.user)
-        posts = Post.objects.all().filter(author = username)
-        context = {"username": username,
+        profile = Profile.objects.get(owner=request.user)
+        posts = Post.objects.all().filter(author=profile)
+        context = {"profile": profile,
+                   "posts": posts}
+        return render(request, "profile/profile_view.html", context)
+
+
+class ProfilePageById(View):
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(pk=kwargs['id'])
+        profile = Profile.objects.get(owner=user)
+        posts = Post.objects.all().filter(author=profile)
+        context = {"profile": profile,
                    "posts": posts}
         return render(request, "profile/profile_view.html", context)
 
