@@ -44,6 +44,8 @@
         {% for post in posts %}
         <div align="center" class="post">
             <b>Author: {{ post.author.name }}</b>
+
+            {# TODO: Это потом лучше сделать через API и JS #}
 			<form method="post" action="{% url 'delete_post' %}">
 			{% csrf_token %}
 			<input hidden type="text" name="index_del" value="{{ forloop.counter0 }}">
