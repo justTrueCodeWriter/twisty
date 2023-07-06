@@ -21,12 +21,14 @@ class CreatePost(View):
                 new_post.save()
         return HttpResponseRedirect(reverse("index"))
 
+
 class DeletePost(View):
     def post(self, request, *args, **kwargs):
         index = int(request.POST["index_del"])
         post = Post.objects.all()[index]
         post.delete()
         return HttpResponseRedirect(reverse("index")) 
+
 
 class EditPost(View):
     def get(self, request, *args, **kwargs):
@@ -40,6 +42,7 @@ class EditPost(View):
         post.save()
         return HttpResponseRedirect(reverse("index"))
     '''
+
 
 class Registration(View):
     def get(self, request, *args, **kwargs):
@@ -94,9 +97,19 @@ class IndexPage(View):
 
 class ProfilePage(View):
     def get(self, request, *args, **kwargs):
-        username = Profile.objects.get(owner=request.user)
-        posts = Post.objects.all().filter(author = username)
-        context = {"username": username,
+        profile = Profile.objects.get(owner=request.user)
+        posts = Post.objects.all().filter(author=profile)
+        context = {"profile": profile,
+                   "posts": posts}
+        return render(request, "profile/profile_view.html", context)
+
+
+class ProfilePageById(View):
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(pk=kwargs['id'])
+        profile = Profile.objects.get(owner=user)
+        posts = Post.objects.all().filter(author=profile)
+        context = {"profile": profile,
                    "posts": posts}
         return render(request, "profile/profile_view.html", context)
 
