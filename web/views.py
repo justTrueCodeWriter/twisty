@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+from django.contrib import messages
 from django.shortcuts import render, reverse
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect
@@ -46,7 +48,13 @@ class Registration(View):
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             logout(request)
-        new_user = User.objects.create_user(request.POST["username"])
+
+        try:
+            new_user = User.objects.create_user(request.POST["username"])
+        except IntegrityError:  #SQLite
+            messages.error(request, "You are already registered")
+            return HttpResponseRedirect(reverse("registration"))
+
         new_user.set_password(request.POST["password"])
         new_user.save()
         new_profile = Profile(owner=new_user, name=request.POST["nickname"])
