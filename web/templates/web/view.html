@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index Page</title>
+	<title>{{post.text}}</title>
 </head>
 <body>
 <style>
@@ -41,34 +41,8 @@
             {% endif %}
         </div>
     </div>
-    <div class="container">
-        {% for post in posts %}
-        <div align="center" class="post">
-            <b>Author: <a href="{% url 'profile_id' id=post.author.pk %}">{{ post.author.name }}</a></b>
-            <p>Created at: {{ post.created.date }} {{ post.created.time }}</p>
-            {% if post.changed %}
-            <p>
-                <i>Changed</i>
-            </p>
-            {% endif %}
-
-            {% if post.author.owner == user %}
-            {# TODO: Это потом лучше сделать через API и JS #}
-			<form method="post" action="{% url 'delete_post' id=post.pk %}">
-			{% csrf_token %}
-			<input hidden type="text" name="index_del" value="{{ forloop.counter0 }}">
-			<input type="submit" value="del">
-			</form>
-
-			<a href="{% url 'edit_post' id=post.pk %}">edit</a><br>
-            {% endif %}
-
-            <hr>
-			<p><a href="{% url 'view_post' id=post.pk %}">{{ post.text }}</a></p>
-            <hr>
-            <p>Karma: {{post.karma}}</p>
-        </div>
-        {% endfor %}
+    <div class="container" align="center">
+		<h1>{{post.text}}</h1> 
     </div>
 </body>
 </html>
