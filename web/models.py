@@ -21,8 +21,7 @@ class Post(models.Model):
     text = models.CharField(max_length=281)
     created = models.DateTimeField(auto_now_add=True,
                                    auto_now=False)
-    changed = models.DateTimeField(auto_now=True,
-                                   null=True)
+    changed = models.DateTimeField(null=True)
     karma = models.IntegerField(default=0)
     votes_count = models.IntegerField(default=0)
 
