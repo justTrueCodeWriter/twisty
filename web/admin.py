@@ -1,5 +1,5 @@
 from django.contrib import admin
-from web.views import Profile, Post
+import web.models as models
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -10,6 +10,10 @@ class PostAdmin(admin.ModelAdmin):
     ...
 
 
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Post, PostAdmin)
+class CommentaryAdmin(admin.ModelAdmin):
+    ...
 
+
+admin.site.register(models.Profile, ProfileAdmin)
+admin.site.register(models.Post, PostAdmin)
+admin.site.register(models.Commentary, CommentaryAdmin)
