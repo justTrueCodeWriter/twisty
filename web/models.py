@@ -24,6 +24,7 @@ class Post(models.Model):
     changed = models.DateTimeField(auto_now=True,
                                    null=True)
     karma = models.IntegerField(default=0)
+    votes_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.text[:20]
