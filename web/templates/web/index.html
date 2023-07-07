@@ -45,13 +45,19 @@
         {% for post in posts %}
         <div align="center" class="post">
             <b>Author: <a href="{% url 'profile_id' id=post.author.pk %}">{{ post.author.name }}</a></b>
+            <p>Created at: {{ post.created.date }} {{ post.created.time }}</p>
+            {% if post.changed %}
+            <p>
+                <i>Changed</i>
+            </p>
+            {% endif %}
 
             {% if post.author.owner == user %}
             {# TODO: Это потом лучше сделать через API и JS #}
 			<form method="post" action="{% url 'delete_post' %}">
 			{% csrf_token %}
 			<input hidden type="text" name="index_del" value="{{ forloop.counter0 }}">
-			<input type="submit" value="del">		
+			<input type="submit" value="del">
 			</form>
 
 			<form method="post" action="{% url 'edit_post' %}">
@@ -63,6 +69,8 @@
 
             <hr>
             <p>{{ post.text }}</p>
+            <hr>
+            <p>Karma: {{post.karma}}</p>
         </div>
         {% endfor %}
     </div>
