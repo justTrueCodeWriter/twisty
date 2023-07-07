@@ -24,25 +24,31 @@ class CreatePost(View):
 
 class DeletePost(View):
     def post(self, request, *args, **kwargs):
-        index = int(request.POST["index_del"])
-        post = Post.objects.all()[index]
+        post = Post.objects.get(pk=kwargs['id'])
         post.delete()
         return HttpResponseRedirect(reverse("index")) 
 
 
 class EditPost(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "web/edit_post.html")
-
-    '''def post(self, request, *args, **kwargs):
-        index = int(request.POST["index_del"])
         user_profile = Profile.objects.get(owner=request.user)
-        post = Post.objects.get(author=user_profile)[index]
+        post = Post.objects.get(pk=kwargs['id'], author=user_profile)
+        context = {"post": post}
+        return render(request, "web/edit_post.html", context)
+
+    def post(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(owner=request.user)
+        post = Post.objects.get(pk=kwargs['id'], author=user_profile)
         post.text = request.POST["text"]
         post.save()
         return HttpResponseRedirect(reverse("index"))
-    '''
 
+class ViewPost(View):
+    def get(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(owner=request.user)
+        post = Post.objects.get(pk=kwargs['id'], author=user_profile)
+        context = {"post": post}
+        return render(request, "web/view.html", context)
 
 class Registration(View):
     def get(self, request, *args, **kwargs):
@@ -90,7 +96,7 @@ class Login(View):
 
 class IndexPage(View):
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
+        posts = Post.objects.order_by('-created')
         context = {"posts": posts}
         return render(request, "web/index.html", context)
 
