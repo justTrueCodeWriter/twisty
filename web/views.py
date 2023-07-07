@@ -90,7 +90,7 @@ class Login(View):
 
 class IndexPage(View):
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
+        posts = Post.objects.order_by('-created')
         context = {"posts": posts}
         return render(request, "web/index.html", context)
 
